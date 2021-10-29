@@ -57,7 +57,7 @@ public class BattleSystem : MonoBehaviour
         enemyHUD.SetHealth(enemyUnit.currentHealth);
         dialogueText.text = "The attack is successful.";
 
-        yield return new WaitForSeconds(2f);
+
 
         if(isDead)
         {
@@ -69,6 +69,7 @@ public class BattleSystem : MonoBehaviour
             state = BattleState.ENEMYTURN;
             StartCoroutine(EnemyTurn());
         }
+        yield return new WaitForSeconds(2f);
     }
 
     void EndBattle()
@@ -119,10 +120,10 @@ public class BattleSystem : MonoBehaviour
         playerHUD.SetHealth(playerUnit.currentHealth);
         dialogueText.text = "You healed yourself.";
 
-        yield return new WaitForSeconds(2f);
-
         state = BattleState.ENEMYTURN;
         StartCoroutine(EnemyTurn());
+
+        yield return new WaitForSeconds(2f);
     }
 
     public void OnAttackButton()

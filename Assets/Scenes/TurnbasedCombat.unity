@@ -646,7 +646,7 @@ GameObject:
   - component: {fileID: 403426632}
   - component: {fileID: 403426634}
   m_Layer: 5
-  m_Name: HPText
+  m_Name: HealthText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -872,6 +872,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 725034200}
   levelText: {fileID: 35172413}
+  healthText: {fileID: 0}
   healthSlider: {fileID: 532909877}
 --- !u!1 &462085751
 GameObject:
@@ -1301,6 +1302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 2061093248}
   levelText: {fileID: 2071925694}
+  healthText: {fileID: 0}
   healthSlider: {fileID: 1624253208}
 --- !u!1 &707997504
 GameObject:
