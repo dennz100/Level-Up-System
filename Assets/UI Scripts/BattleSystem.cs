@@ -55,9 +55,6 @@ public class BattleSystem : MonoBehaviour
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
 
         enemyHUD.SetHealth(enemyUnit.currentHealth);
-        dialogueText.text = "The attack is successful.";
-
-
 
         if(isDead)
         {
