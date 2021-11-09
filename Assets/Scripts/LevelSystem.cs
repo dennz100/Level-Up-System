@@ -13,11 +13,11 @@ public class LevelSystem : MonoBehaviour
     public float currentXp;
     public float requiredXp;
 
-    //[Header("UI")]
-    //public Image frontXpBar;
-    //public Image backXpBar;
-    //public TextMeshProUGUI levelText;
-    //public TextMeshProUGUI xpText;
+    // [Header("UI")]
+    // public Image frontXpBar;
+    // public Image backXpBar;
+    // public TextMeshProUGUI levelText;
+    // public TextMeshProUGUI xpText;
     [Header("Multipliers")]
     [Range(1f, 300f)]
     public float additionMultiplier = 300;
