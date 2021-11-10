@@ -760,6 +760,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5f3006f53862f24cbcd92aa40cfb3ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnemyKilledEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6155461106246186940}
+        m_TargetAssemblyTypeName: LevelSystem, Assembly-CSharp
+        m_MethodName: GainExperienceFlatRate
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   playerPrefab: {fileID: 4403772587647395778, guid: 0f6613d901a12504b9abbb5bacaf610d, type: 3}
   enemyPrefab: {fileID: 6197239293322655957, guid: c61d85cce3ef5a4418ed0ffb6216898c, type: 3}
   playerBattleStation: {fileID: 2085889963}
@@ -880,6 +895,8 @@ MonoBehaviour:
   frontXpBar: {fileID: 0}
   backXpBar: {fileID: 0}
   xpText: {fileID: 0}
+  ShouldAnimateXpBar: 0
+  LerpPercent: 0.4
 --- !u!1 &462085751
 GameObject:
   m_ObjectHideFlags: 0
@@ -1448,6 +1465,8 @@ MonoBehaviour:
   frontXpBar: {fileID: 6155461106005916320}
   backXpBar: {fileID: 6155461106555960604}
   xpText: {fileID: 1958704949}
+  ShouldAnimateXpBar: 0
+  LerpPercent: 0.4
 --- !u!1 &707997504
 GameObject:
   m_ObjectHideFlags: 0
@@ -3602,6 +3621,18 @@ MonoBehaviour:
       - m_Target: {fileID: 692849159}
         m_TargetAssemblyTypeName: BattleHUD, Assembly-CSharp
         m_MethodName: SetLevel
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4403772587647395804, guid: 0f6613d901a12504b9abbb5bacaf610d, type: 3}
+        m_TargetAssemblyTypeName: Unit, Assembly-CSharp
+        m_MethodName: LevelUp
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

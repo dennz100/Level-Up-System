@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public enum BattleState {START, PLAYERTURN, ENEMYTURN, WON, LOST }
 
 public class BattleSystem : MonoBehaviour
 {
+    public UnityEvent<float> EnemyKilledEvent;
 
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
@@ -58,6 +60,7 @@ public class BattleSystem : MonoBehaviour
 
         if(isDead)
         {
+            EnemyKilledEvent.Invoke(enemyUnit.Experience);
             state = BattleState.WON;
             EndBattle();
         }

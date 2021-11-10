@@ -12,6 +12,8 @@ public class Unit : MonoBehaviour
     public int maxHealth;
     public int currentHealth;
 
+    public float Experience = 20;
+
     public bool TakeDamage(int damage)
     {
         currentHealth -= damage;
@@ -33,5 +35,10 @@ public class Unit : MonoBehaviour
         {
             currentHealth = maxHealth;
         }
+    }
+    public void LevelUp(int level)
+    {
+        unitLevel = level;
+        print(level);
     }
 }

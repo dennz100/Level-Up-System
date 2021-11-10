@@ -21,7 +21,11 @@ public class BattleHUD : MonoBehaviour
 
     private void Start()
     {
-        frontXpBar.fillAmount = 0;
+        if (frontXpBar)
+        {
+            frontXpBar.fillAmount = 0;
+        }
+        
     }
 
     public void SetHUD(Unit unit)
@@ -41,6 +45,8 @@ public class BattleHUD : MonoBehaviour
     public void SetLevel(int level)
     {
         levelText.text = "Lvl " + level.ToString();
+        frontXpBar.fillAmount = 0;
+        backXpBar.fillAmount = 0;
     }
 
     public void UpdateXpUI(float currentXp, float requiredXp)
@@ -55,7 +61,8 @@ public class BattleHUD : MonoBehaviour
         if (FXP < xpFraction)
         {
             ShouldAnimateXpBar = true;
-            // StartCoroutine(AnimateXpBar(currentXp, requiredXp));
+            StopCoroutine(AnimateXpBar(currentXp, requiredXp));
+            StartCoroutine(AnimateXpBar(currentXp, requiredXp));
         }
         xpText.text = currentXp + "/" + requiredXp;
     }
@@ -66,54 +73,83 @@ public class BattleHUD : MonoBehaviour
 
     private void Update()
     {
+        //// if (ShouldAnimateXpBar)
+        //{
+        //    if (frontXpBar && backXpBar)
+        //    {
+        //        float xpFraction = this.currentXp / requiredXp;
+        //        float FXP = frontXpBar.fillAmount;
+        //        print(xpFraction);
+        //        // print(requiredXp);
+        //        print(frontXpBar.fillAmount);
+        //        print(FXP < xpFraction);
+        //        if (FXP < xpFraction)
+        //        {
+        //            delayTimer += Time.deltaTime;
+        //            print(delayTimer);
+        //            backXpBar.fillAmount = xpFraction;
+        //            if (delayTimer > 0.3)
+        //            {
+        //                lerpTimer += Time.deltaTime;
+        //                float percentComplete = lerpTimer / 4;
+                        
+        //                frontXpBar.fillAmount = Mathf.Lerp(FXP, backXpBar.fillAmount, percentComplete);
+        //            }
+        //        }
+        //    }
+
+        //}
+
+    }
+    [Range(0.0001f, 1)]
+    public float LerpPercent = 0.5f;
+
+    private IEnumerator AnimateXpBar(float currentXp, float requiredXp)
+    {
         // if (ShouldAnimateXpBar)
         {
             if (frontXpBar && backXpBar)
             {
-                float xpFraction = this.currentXp / requiredXp;
+                yield return new WaitForSeconds(0.3f);
+                float xpFraction = currentXp / requiredXp;
                 float FXP = frontXpBar.fillAmount;
-                print(xpFraction);
                 // print(requiredXp);
-                print(frontXpBar.fillAmount);
-                print(FXP < xpFraction);
                 if (FXP < xpFraction)
                 {
-                    delayTimer += Time.deltaTime;
-                    print(delayTimer);
+                    // delayTimer += Time.deltaTime;
                     backXpBar.fillAmount = xpFraction;
-                    if (delayTimer > 0.3)
+                    // if (delayTimer > 0.3)
+                    while (frontXpBar.fillAmount < backXpBar.fillAmount)
                     {
                         lerpTimer += Time.deltaTime;
-                        float percentComplete = lerpTimer / 4;
-                        
+                        float percentComplete = lerpTimer / LerpPercent;
+
                         frontXpBar.fillAmount = Mathf.Lerp(FXP, backXpBar.fillAmount, percentComplete);
+                        yield return null;
                     }
                 }
+                lerpTimer = 0;
             }
 
         }
 
-    }
+        //float lerpDuration = 1;
+        //float startValue = frontXpBar.fillAmount;
+        //float endValue = currentXp / requiredXp;
+        //float valueToLerp;
+        //{
+        //    float timeElapsed = 0;
 
-    private IEnumerator AnimateXpBar(float currentXp, float requiredXp)
-    {
-        float lerpDuration = 1;
-        float startValue = frontXpBar.fillAmount;
-        float endValue = currentXp / requiredXp;
-        float valueToLerp;
-        {
-            float timeElapsed = 0;
+        //    while (timeElapsed < lerpDuration)
+        //    {
+        //        timeElapsed += Time.deltaTime;
+        //        valueToLerp = Mathf.Lerp(startValue, endValue, timeElapsed / lerpDuration);
+        //        frontXpBar.fillAmount = valueToLerp;
 
-            while (timeElapsed < lerpDuration)
-            {
-                timeElapsed += Time.deltaTime;
-                valueToLerp = Mathf.Lerp(startValue, endValue, timeElapsed / lerpDuration);
-                frontXpBar.fillAmount = valueToLerp;
+        //        yield return null;
+        //    }
 
-                yield return null;
-            }
-
-            valueToLerp = endValue;
-        }
+        //    valueToLerp = endValue;
+        //}
     }
 }

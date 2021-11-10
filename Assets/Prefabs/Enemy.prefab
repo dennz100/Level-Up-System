@@ -49,6 +49,7 @@ MonoBehaviour:
   damage: 4
   maxHealth: 13
   currentHealth: 13
+  Experience: 100
 --- !u!1 &6197239295282746751
 GameObject:
   m_ObjectHideFlags: 0
