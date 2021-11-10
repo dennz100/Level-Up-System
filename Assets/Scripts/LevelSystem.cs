@@ -9,6 +9,7 @@ public class LevelSystem : MonoBehaviour
 {
     public UnityEvent<int> LevelUpEvent;
     public UnityEvent<float, float> UpdateXpEvent;
+    public UnityEvent<int> UpdateHealthEvent;
     public int level;
     public float currentXp;
     public float requiredXp;
@@ -80,6 +81,7 @@ public class LevelSystem : MonoBehaviour
         // levelText.text = "Lvl " + level;
         LevelUpEvent.Invoke(level);
         UpdateXpEvent.Invoke(currentXp, requiredXp);
+        // UpdateHealthEvent.Invoke(0);
     }
 
     private int CalculateRequiredXp()

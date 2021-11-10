@@ -132,3 +132,4 @@ MonoBehaviour:
   damage: 5
   maxHealth: 25
   currentHealth: 25
+  Experience: 0

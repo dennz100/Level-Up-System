@@ -33,15 +33,23 @@ public class BattleSystem : MonoBehaviour
         SetupBattle();
     }
 
+    public void UpdateHealthUI(int health)
+    {
+        playerHUD.SetHealth(playerUnit.currentHealth / playerUnit.maxHealth);
+    }
+
     IEnumerator SetupBattle()
     {
         GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
         playerUnit = playerGO.GetComponent<Unit>();
+        LevelSystem levelSystem = GameObject.Find("XPBar").GetComponent<LevelSystem>();
+        levelSystem.LevelUpEvent.AddListener(playerUnit.LevelUp);
+        levelSystem.UpdateHealthEvent.AddListener(UpdateHealthUI);
 
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
         enemyUnit = enemyGO.GetComponent<Unit>();
 
-        dialogueText.text = "A " + enemyUnit.unitName +" appears.";
+        dialogueText.text = "A " + enemyUnit.unitName + " appears.";
 
         playerHUD.SetHUD(playerUnit);
         enemyHUD.SetHUD(enemyUnit);
@@ -61,8 +69,11 @@ public class BattleSystem : MonoBehaviour
         if(isDead)
         {
             EnemyKilledEvent.Invoke(enemyUnit.Experience);
-            state = BattleState.WON;
-            EndBattle();
+            GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
+            enemyUnit = enemyGO.GetComponent<Unit>();
+            enemyHUD.SetHealth(enemyUnit.currentHealth);
+            // state = BattleState.WON;
+            // EndBattle();
         }
         else
         {
@@ -92,7 +103,10 @@ public class BattleSystem : MonoBehaviour
 
        bool isDead = playerUnit.TakeDamage(enemyUnit.damage);
 
-        playerHUD.SetHealth(playerUnit.currentHealth);
+        playerHUD.SetHealth(playerUnit.currentHealth / playerUnit.maxHealth);
+        print(playerUnit.currentHealth / playerUnit.maxHealth);
+        print(playerUnit.currentHealth);
+        print(playerUnit.maxHealth);
 
         yield return new WaitForSeconds(1f);
 

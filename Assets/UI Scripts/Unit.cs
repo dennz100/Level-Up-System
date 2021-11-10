@@ -40,5 +40,10 @@ public class Unit : MonoBehaviour
     {
         unitLevel = level;
         print(level);
+        maxHealth += maxHealth / 4;
+        currentHealth = maxHealth;
+        
+        print(currentHealth);
+        print(maxHealth);
     }
 }
