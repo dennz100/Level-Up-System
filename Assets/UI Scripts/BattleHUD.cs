@@ -32,9 +32,10 @@ public class BattleHUD : MonoBehaviour
     {
         nameText.text = unit.unitName;
         levelText.text = "Lvl " + unit.unitLevel;
-        // healthText.text = unit.currentHealth;
+        healthText.text = unit.currentHealth.ToString();
         healthSlider.maxValue = 1;
-        healthSlider.value = unit.currentHealth / unit.maxHealth;
+        // healthSlider.value = unit.currentHealth / unit.maxHealth;
+        healthSlider.value = unit.HealthUI;
     }
 
     public void SetHealth(float health)

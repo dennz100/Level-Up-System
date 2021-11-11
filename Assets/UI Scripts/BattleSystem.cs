@@ -23,7 +23,10 @@ public class BattleSystem : MonoBehaviour
 
     public BattleHUD playerHUD;
     public BattleHUD enemyHUD;
-    
+
+    public WaitForSeconds WaitTwoSeconds = new WaitForSeconds(2f);
+    public WaitForSeconds WaitOneSecond = new WaitForSeconds(1f);
+
     public BattleState state;
     // Start is called before the first frame update
     void Start()
@@ -33,9 +36,9 @@ public class BattleSystem : MonoBehaviour
         SetupBattle();
     }
 
-    public void UpdateHealthUI(int health)
+    public void UpdateHealthUI()
     {
-        playerHUD.SetHealth(playerUnit.currentHealth / playerUnit.maxHealth);
+        playerHUD.SetHealth(playerUnit.HealthUI);
     }
 
     IEnumerator SetupBattle()
@@ -44,6 +47,7 @@ public class BattleSystem : MonoBehaviour
         playerUnit = playerGO.GetComponent<Unit>();
         LevelSystem levelSystem = GameObject.Find("XPBar").GetComponent<LevelSystem>();
         levelSystem.LevelUpEvent.AddListener(playerUnit.LevelUp);
+        
         levelSystem.UpdateHealthEvent.AddListener(UpdateHealthUI);
 
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
@@ -54,7 +58,7 @@ public class BattleSystem : MonoBehaviour
         playerHUD.SetHUD(playerUnit);
         enemyHUD.SetHUD(enemyUnit);
 
-        yield return new WaitForSeconds(2f);
+        yield return WaitTwoSeconds;
 
         state = BattleState.PLAYERTURN;
         PlayerTurn();
@@ -62,16 +66,44 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator PlayerAttack()
     {
-        bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
+        int playerDamageAmount = Random.Range(playerUnit.unitLevel + 3, playerUnit.unitLevel + 5);
 
-        enemyHUD.SetHealth(enemyUnit.currentHealth);
+        bool isDead = enemyUnit.TakeDamage(playerDamageAmount);
 
-        if(isDead)
+        enemyHUD.SetHealth(enemyUnit.HealthUI);
+        dialogueText.text = "Enemy took " + playerDamageAmount + " damage.";
+        enemyHUD.healthText.text = enemyUnit.currentHealth.ToString();
+
+        if (enemyUnit.currentHealth < 0)
         {
+            enemyUnit.currentHealth = 0;
+            enemyHUD.healthText.text = enemyUnit.currentHealth.ToString();
+        }
+
+        yield return WaitOneSecond;
+
+        if (isDead)
+        {
+            dialogueText.text = "Enemy Defeated!";
+            Destroy(enemyUnit.gameObject);
             EnemyKilledEvent.Invoke(enemyUnit.Experience);
+
+            yield return WaitTwoSeconds;
+
+            dialogueText.text = "A " + enemyUnit.unitName + " appears.";
             GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
             enemyUnit = enemyGO.GetComponent<Unit>();
-            enemyHUD.SetHealth(enemyUnit.currentHealth);
+            // enemyHUD.SetHealth(enemyUnit.currentHealth);
+            enemyUnit.unitLevel = Random.Range(playerUnit.unitLevel, playerUnit.unitLevel + 2);
+            
+            if (enemyUnit.unitLevel > 1)
+            {
+                enemyUnit.maxHealth += enemyUnit.maxHealth / 4;
+            }
+           
+            enemyUnit.currentHealth = enemyUnit.maxHealth;
+            
+            enemyHUD.SetHUD(enemyUnit);
             // state = BattleState.WON;
             // EndBattle();
         }
@@ -80,7 +112,7 @@ public class BattleSystem : MonoBehaviour
             state = BattleState.ENEMYTURN;
             StartCoroutine(EnemyTurn());
         }
-        yield return new WaitForSeconds(2f);
+        yield return WaitTwoSeconds;
     }
 
     void EndBattle()
@@ -97,18 +129,29 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator EnemyTurn()
     {
+        int enemyDamageAmount = Random.Range(playerUnit.unitLevel + 2, playerUnit.unitLevel + 4);
+
         dialogueText.text = enemyUnit.unitName + " attacks!";
 
-        yield return new WaitForSeconds(1f);
+        yield return WaitOneSecond;
 
-       bool isDead = playerUnit.TakeDamage(enemyUnit.damage);
+       bool isDead = playerUnit.TakeDamage(enemyDamageAmount);
 
-        playerHUD.SetHealth(playerUnit.currentHealth / playerUnit.maxHealth);
-        print(playerUnit.currentHealth / playerUnit.maxHealth);
-        print(playerUnit.currentHealth);
-        print(playerUnit.maxHealth);
+        playerHUD.SetHealth(playerUnit.HealthUI);
+        dialogueText.text = "Knight took " + enemyDamageAmount + " damage.";
+        playerHUD.healthText.text = playerUnit.currentHealth.ToString();
+        
+        if (playerUnit.currentHealth < 0)
+        {
+            playerUnit.currentHealth = 0;
+            playerHUD.healthText.text = playerUnit.currentHealth.ToString();
+        }
 
-        yield return new WaitForSeconds(1f);
+        // print(playerUnit.HealthUI);
+        // print(playerUnit.currentHealth);
+        // print(playerUnit.maxHealth);
+
+        yield return WaitOneSecond;
 
         if(isDead)
         {
@@ -129,15 +172,20 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator PlayerHeal()
     {
-        playerUnit.Heal(5);
+        int healAmount = Random.Range(playerUnit.unitLevel + 3, playerUnit.unitLevel + 5);
 
-        playerHUD.SetHealth(playerUnit.currentHealth);
+        playerUnit.Heal(healAmount);
+        playerHUD.healthText.text = playerUnit.currentHealth.ToString();
+
+        playerHUD.SetHealth(playerUnit.HealthUI);
         dialogueText.text = "You healed yourself.";
+
+        yield return WaitOneSecond;
 
         state = BattleState.ENEMYTURN;
         StartCoroutine(EnemyTurn());
 
-        yield return new WaitForSeconds(2f);
+        yield return WaitTwoSeconds;
     }
 
     public void OnAttackButton()

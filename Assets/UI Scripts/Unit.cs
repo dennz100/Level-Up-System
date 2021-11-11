@@ -12,7 +12,8 @@ public class Unit : MonoBehaviour
     public int maxHealth;
     public int currentHealth;
 
-    public float Experience = 20;
+    public float Experience => Random.Range(10, 20);
+    public float HealthUI => (float)currentHealth / (float)maxHealth;
 
     public bool TakeDamage(int damage)
     {
@@ -39,11 +40,7 @@ public class Unit : MonoBehaviour
     public void LevelUp(int level)
     {
         unitLevel = level;
-        print(level);
         maxHealth += maxHealth / 4;
         currentHealth = maxHealth;
-        
-        print(currentHealth);
-        print(maxHealth);
     }
 }
