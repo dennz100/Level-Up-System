@@ -48,7 +48,7 @@ public class LevelSystem : MonoBehaviour
 
     public void GainExperienceFlatRate(float xpGained)
     {
-        print(xpGained);
+        // print(xpGained);
         currentXp += xpGained;
         UpdateXpEvent.Invoke(currentXp, requiredXp);
         // lerpTimer = 0f;

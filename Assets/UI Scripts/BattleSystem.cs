@@ -71,7 +71,7 @@ public class BattleSystem : MonoBehaviour
         bool isDead = enemyUnit.TakeDamage(playerDamageAmount);
 
         enemyHUD.SetHealth(enemyUnit.HealthUI);
-        dialogueText.text = "Enemy took " + playerDamageAmount + " damage.";
+        dialogueText.text = "Enemy took " + playerDamageAmount + " DMG.";
         enemyHUD.healthText.text = enemyUnit.currentHealth.ToString();
 
         if (enemyUnit.currentHealth < 0)
@@ -123,13 +123,14 @@ public class BattleSystem : MonoBehaviour
         }
         else if (state == BattleState.LOST)
         {
+            Destroy(playerUnit.gameObject);
             dialogueText.text = "Defeat.";
         }
     }
 
     IEnumerator EnemyTurn()
     {
-        int enemyDamageAmount = Random.Range(playerUnit.unitLevel + 2, playerUnit.unitLevel + 4);
+        int enemyDamageAmount = Random.Range(enemyUnit.unitLevel + 1, enemyUnit.unitLevel + 3);
 
         dialogueText.text = enemyUnit.unitName + " attacks!";
 
@@ -138,7 +139,7 @@ public class BattleSystem : MonoBehaviour
        bool isDead = playerUnit.TakeDamage(enemyDamageAmount);
 
         playerHUD.SetHealth(playerUnit.HealthUI);
-        dialogueText.text = "Knight took " + enemyDamageAmount + " damage.";
+        dialogueText.text = "Knight took " + enemyDamageAmount + " DMG.";
         playerHUD.healthText.text = playerUnit.currentHealth.ToString();
         
         if (playerUnit.currentHealth < 0)
@@ -172,13 +173,13 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator PlayerHeal()
     {
-        int healAmount = Random.Range(playerUnit.unitLevel + 3, playerUnit.unitLevel + 5);
+        int healAmount = Random.Range(playerUnit.unitLevel + 1, playerUnit.unitLevel + 7);
 
         playerUnit.Heal(healAmount);
         playerHUD.healthText.text = playerUnit.currentHealth.ToString();
 
         playerHUD.SetHealth(playerUnit.HealthUI);
-        dialogueText.text = "You healed yourself.";
+        dialogueText.text = "You healed for " + healAmount + " HP.";
 
         yield return WaitOneSecond;
 

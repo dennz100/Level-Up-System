@@ -43,7 +43,7 @@ public class BattleHUD : MonoBehaviour
         // healthSlider.maxValue = unit.maxHealth;
         // healthSlider.value = unit.currentHealth;
         healthSlider.value = health;
-        print(health);
+        // print(health);
     }
 
     public void SetLevel(int level)

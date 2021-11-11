@@ -12,7 +12,7 @@ public class Unit : MonoBehaviour
     public int maxHealth;
     public int currentHealth;
 
-    public float Experience => Random.Range(10, 20);
+    public float Experience => Random.Range(unitLevel * 10, unitLevel * 25);
     public float HealthUI => (float)currentHealth / (float)maxHealth;
 
     public bool TakeDamage(int damage)
