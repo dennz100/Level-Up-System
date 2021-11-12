@@ -47,7 +47,7 @@ public class BattleSystem : MonoBehaviour
         playerUnit = playerGO.GetComponent<Unit>();
         LevelSystem levelSystem = GameObject.Find("XPBar").GetComponent<LevelSystem>();
         levelSystem.LevelUpEvent.AddListener(playerUnit.LevelUp);
-        
+
         levelSystem.UpdateHealthEvent.AddListener(UpdateHealthUI);
 
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
@@ -88,19 +88,20 @@ public class BattleSystem : MonoBehaviour
             Destroy(enemyUnit.gameObject);
             EnemyKilledEvent.Invoke(enemyUnit.Experience);
 
+            yield return new WaitForSeconds(0.01f);
+            playerHUD.healthText.text = playerUnit.currentHealth.ToString();
+
             yield return WaitTwoSeconds;
 
             dialogueText.text = "A " + enemyUnit.unitName + " appears.";
             GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
             enemyUnit = enemyGO.GetComponent<Unit>();
             // enemyHUD.SetHealth(enemyUnit.currentHealth);
-            enemyUnit.unitLevel = Random.Range(playerUnit.unitLevel, playerUnit.unitLevel + 2);
-            
-            if (enemyUnit.unitLevel > 1)
-            {
+            enemyUnit.unitLevel = Random.Range(playerUnit.unitLevel + 0, playerUnit.unitLevel + 2);
+
+            for (int level = 1; level < enemyUnit.unitLevel; level++)
                 enemyUnit.maxHealth += enemyUnit.maxHealth / 4;
-            }
-           
+
             enemyUnit.currentHealth = enemyUnit.maxHealth;
             
             enemyHUD.SetHUD(enemyUnit);
@@ -130,7 +131,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator EnemyTurn()
     {
-        int enemyDamageAmount = Random.Range(enemyUnit.unitLevel + 1, enemyUnit.unitLevel + 3);
+        int enemyDamageAmount = Random.Range(enemyUnit.unitLevel + 1, enemyUnit.unitLevel + 4);
 
         dialogueText.text = enemyUnit.unitName + " attacks!";
 
@@ -179,7 +180,7 @@ public class BattleSystem : MonoBehaviour
         playerHUD.healthText.text = playerUnit.currentHealth.ToString();
 
         playerHUD.SetHealth(playerUnit.HealthUI);
-        dialogueText.text = "You healed for " + healAmount + " HP.";
+        dialogueText.text = "Knight healed for " + healAmount + " HP.";
 
         yield return WaitOneSecond;
 

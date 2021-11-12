@@ -1,0 +1,6 @@
+- Fix health-scaling for enemies (Currently Lvl 1 has 13, Lvl 2 has 16, Lvl 3+ has still 16)
+Row 102 - 105
+
+- Fix damage range for enemies (Lvl 1 enemy is supposed to deal 2-4 DMG, but only deals 2-3.
+  Easy solution would be to increase enemy max damage by 1.) [Kinda Fixed]
+Row 136
